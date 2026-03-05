@@ -12,7 +12,6 @@ class DysonSwarmEngine:
 
     def calculate_swarm(self, T, H, rho, P_factor):
         D = math.sqrt(self.L / (16 * self.pi * self.sigma * T**4))
-        # This is the theoretical limit (Area/Mass) where light push = gravity pull
         AreaMassLimit = (4 * self.pi * self.G * self.M * self.c) / self.L
         M_total = (4 * self.pi * D**2) * H * rho * P_factor
         P_orb_sec = 2 * self.pi * math.sqrt(D**3 / self.sgp)
