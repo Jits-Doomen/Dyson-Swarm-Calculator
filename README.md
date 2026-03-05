@@ -1,40 +1,74 @@
-### Dyson Swarm Calculator 
+# Dyson Swarm Calculator
+
+**A physics-based simulator for Type II Civilizational Engineering.**
+
+This engine models the physical and logistical requirements for constructing a **Dyson Swarm**—a megastructure of quadrillions of solar collectors—around a G-type star. It translates abstract astrophysical concepts into concrete engineering data, such as construction timelines, planetary consumption, and orbital stability.
 ___
-# Dyson Swarm Parameter Calculator.
+## Core Physics
 
-**A physics-based study for mega-scale orbital energy structures to bring us to a Type II civilization on the Kardashev scale.**
+The simulator evaluates the swarm's possibility by solving for four primary variables:
+_
+### 1. Thermal Equilibrium (The "Goldilocks" Radius)
 
-This repository contains a Python implementation of a Dyson Swarm feasibility model. It derives the necessary physical constraints (distance, mass, and orbital dynamics) required to construct an energy-collection shell around a star.
-___
-##  Physics Implementation
+Using the **Stefan-Boltzmann Law**, we calculate the distance ($D$) where a satellite maintains a specific operating temperature ($T$). This prevents the swarm from melting or freezing.
 
-The simulator uses four important laws of astrophysics to determine the eventual results:
-
-1. **Thermal Equilibrium (Stefan-Boltzmann Law)**:
-Calculates the orbital radius ($D$) where a satellite maintains a specific temperature ($T$) based on the star's luminosity ($L$).
 
 $$D = \sqrt{\frac{L}{16 \pi \sigma T^4}}$$
+_
+### 2. Orbital Dynamics
 
-2. **Orbital Mechanics (Kepler's Third Law)**:
-Determines the time ($P$) it takes for a swarm element to complete one revolution.
+Utilizing **Kepler's Third Law**, the engine determines the orbital period ($P$) and the necessary Delta-V to reach the swarm's destination from a 1 AU (Earth-like) starting point.
+_
+### 3. The Statite Limit (Radiation Pressure)
 
-$$P = 2\pi\sqrt{\frac{D^3}{GM}}$$
+A critical feature of this engine is the calculation of the **Area-to-Mass (A/m) Ratio**. This determines if a satellite is "Heavy" (gravity dominated) or a "Light Sail" (radiation pressure dominated).
 
-3. **The "Statite" Limit (Eddington Ratio Reciprocal)**:
-Derives the required **Area-to-Mass ratio** ($A/m$) where radiation pressure equals gravitational pull, allowing satellites to "hover" without orbiting.
-4. **Integrated Shell Mass**:
-Estimates the total planetary material required based on panel thickness, density, and swarm coverage.
+> **Critical Limit:** For Sol, the balance point is **1.305 $m^2/kg$**. If a panel exceeds this, it will be blown out of the solar system by sunlight.
+_
+### 4. Hyper-Exponential Growth
+
+Unlike linear construction models, this simulator accounts for **Positive Feedback Loops**. It models self-replicating robots that use the energy from active satellites to accelerate the production of new ones.
 ___
-## Example Results (Sol-Based)
+## Output Metrics
 
-Using the solar constant and a target temperature of **373K** (the boiling point of water):
+When you run the simulation, you receive a full mission report:
 
-* **Orbital Radius:** 84.34 million km (0.56 AU)
-* **Orbital Period:** 151.7 Earth Days
-* **Critical A/m Ratio:** 1.305 $m^2/kg$
+* **Planetary Consumption:** How many Mercuries or Moons must be deconstructed to build it.
+* **Mission Operations:** Total satellite count and annual maintenance.
+* **Construction Timeline:** Total years required using exponential industrial models.
 ___
-## How to Use
+## Usage
 
-1. **Clone the repo**: `git clone https://github.com/Jits-Doomen/Dyson-Swarm-Simulator.git`
-2. **Run the script**: `python dyson_swarm.py`
-3. **Input Constants**: Enter your own custom star luminosity or material density to test different star systems.
+### Prerequisites
+
+* Python 3.8 or higher.
+* `math` library (Standard library).
+
+### Installation
+
+```bash
+git clone https://github.com/Jits-Doomen/Dyson-Swarm-Simulator.git
+cd Dyson-Swarm-Simulator
+python main.py
+
+```
+___
+## Usage Example
+
+**Input Scenario:**
+
+* **Target Temp:** 825K
+* **Coverage:** 50%
+* **Thickness:** 5cm
+
+**Engine Output:**
+
+> **Recommendation:** Deconstruct 57% of Mercury.
+> **Timeline:** 51.23 years (Unified Humanity Mobilization).
+> **Status:** Gravitationally Stable.
+___
+## Roadmap
+
+* [ ] Add **Kardashev Scale** tracker (Type 1.0 to 2.0 progress).
+* [ ] Implement **Star System Presets** (Proxima Centauri, Sirius, etc.).
+* [ ] Add **Material Cost Analysis** (Lead shielding vs. Carbon Fiber).
