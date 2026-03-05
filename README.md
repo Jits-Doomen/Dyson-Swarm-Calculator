@@ -66,9 +66,3 @@ ___
 > **Recommendation:** Deconstruct 57% of Mercury.
 > **Timeline:** 51.23 years (Unified Humanity Mobilization).
 > **Status:** Gravitationally Stable.
-___
-## Roadmap
-
-* [ ] Add **Kardashev Scale** tracker (Type 1.0 to 2.0 progress).
-* [ ] Implement **Star System Presets** (Proxima Centauri, Sirius, etc.).
-* [ ] Add **Material Cost Analysis** (Lead shielding vs. Carbon Fiber).
