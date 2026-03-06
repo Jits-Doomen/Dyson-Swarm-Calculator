@@ -47,8 +47,8 @@ ___
 ### Installation
 
 ```bash
-git clone https://github.com/Jits-Doomen/Dyson-Swarm-Simulator.git
-cd Dyson-Swarm-Simulator
+git clone https://github.com/Jits-Doomen/Dyson-Swarm-Calculator.git
+cd Dyson-Swarm-Calculator
 py main.py
 ```
 ___
