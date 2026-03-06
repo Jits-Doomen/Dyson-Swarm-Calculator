@@ -49,8 +49,7 @@ ___
 ```bash
 git clone https://github.com/Jits-Doomen/Dyson-Swarm-Simulator.git
 cd Dyson-Swarm-Simulator
-python main.py
-
+python main.py9
 ```
 ___
 ## Usage Example
