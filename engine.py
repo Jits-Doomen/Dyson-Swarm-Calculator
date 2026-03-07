@@ -19,6 +19,10 @@ class DysonSwarmEngine:
         self.sigma = config.SIGMA
         self.sgp = config.G * config.M
 
+    def calculate_power_harvested(self, D, P_factor):
+        total_power_watts = self.L * P_factor
+        return total_power_watts
+
     def calculate_swarm(self, T, H, rho, P_factor) -> SwarmResult:
         D = math.sqrt(self.L / (16 * self.pi * self.sigma * T**4))
         AreaMassLimit = (4 * self.pi * self.G * self.M * self.c) / self.L
@@ -43,7 +47,9 @@ class DysonSwarmEngine:
     def calculate_resource_cost(self, M_total):
         return M_total / 3.301e23, M_total / 7.348e22
 
-    def calculate_mission_stats(self, D, P_factor, M_total, sat_size_km):
+    def calculate_mission_stats(self, D, P_factor, M_total, sat_size_km, mobilization_factor: float):
         sat_count = (4 * self.pi * D**2 * P_factor) / ((sat_size_km**2) * 1e6)
-        construction_years = 0.875 * math.log2(M_total / 450000) if M_total > 450000 else 0
+        annual_unit_capacity = 1e14
+        effective_capacity = annual_unit_capacity * mobilization_factor
+        construction_years = sat_count / effective_capacity
         return sat_count, construction_years, sat_count * 0.01
