@@ -10,20 +10,17 @@ The simulator evaluates the swarm's possibility by solving for four primary vari
 _
 ### 1. Thermal Equilibrium (The "Goldilocks" Radius)
 
-Using the **Stefan-Boltzmann Law**, we calculate the distance ($D$) where a satellite maintains a specific operating temperature ($T$). This prevents the swarm from melting or freezing.
-
-
-$$D = \sqrt{\frac{L}{16 \pi \sigma T^4}}$$
+Using the **Stefan-Boltzmann Law**, we calculate the distance where a satellite maintains a specific operating temperature . This prevents the swarm from melting or freezing.
 _
 ### 2. Orbital Dynamics
 
-Utilizing **Kepler's Third Law**, the engine determines the orbital period ($P$) and the necessary Delta-V to reach the swarm's destination from a 1 AU (Earth-like) starting point.
+Utilizing **Kepler's Third Law**, the engine determines the orbital period and the necessary Delta-V to reach the swarm's destination from a 1 AU (Earth-like) starting point.
 _
 ### 3. The Statite Limit (Radiation Pressure)
 
 A critical feature of this engine is the calculation of the **Area-to-Mass (A/m) Ratio**. This determines if a satellite is "Heavy" (gravity dominated) or a "Light Sail" (radiation pressure dominated).
 
-> **Critical Limit:** For Sol, the balance point is **1.305 $m^2/kg$**. If a panel exceeds this, it will be blown out of the solar system by sunlight.
+> **Critical Limit:** For Sol, the balance point is **1.305 m^2/kg**. If a panel exceeds this, it will be blown out of the solar system by sunlight.
 
 ### 4. Hyper-Exponential Growth
 
