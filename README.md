@@ -7,15 +7,15 @@ ___
 ## Core Physics
 
 The simulator evaluates the swarm's possibility by solving for four primary variables:
-_
+
 ### 1. Thermal Equilibrium (The "Goldilocks" Radius)
 
 Using the **Stefan-Boltzmann Law**, we calculate the distance where a satellite maintains a specific operating temperature . This prevents the swarm from melting or freezing.
-_
+
 ### 2. Orbital Dynamics
 
 Utilizing **Kepler's Third Law**, the engine determines the orbital period and the necessary Delta-V to reach the swarm's destination from a 1 AU (Earth-like) starting point.
-_
+
 ### 3. The Statite Limit (Radiation Pressure)
 
 A critical feature of this engine is the calculation of the **Area-to-Mass (A/m) Ratio**. This determines if a satellite is "Heavy" (gravity dominated) or a "Light Sail" (radiation pressure dominated).
