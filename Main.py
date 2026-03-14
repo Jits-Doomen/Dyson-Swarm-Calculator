@@ -1,9 +1,11 @@
 from config import PhysicalConstants
 from constants import MATERIALS
 from engine import DysonSwarmEngine
+from units import Units
 
 def main():
-
+    mode = input("Select system (EU for Metric / NA for Imperial): ")
+    formatter = Units(mode)
     mob_input = float(input("\nEnter global resource mobilization factor (0.0 to 1.0): "))
     print("\nChoose your desired material:")
     for k, v in MATERIALS.items():
@@ -22,8 +24,8 @@ def main():
     sat_count, build_time, maintenance = engine.calculate_mission_stats(res.radius_km, P_factor, res.total_mass_kg, sat_size, mob_input)
 
     print(f"\nResults for {mat_name}")
-    print(f"Radius: {res.radius_km/1e9:.2f} million km")
-    print(f"Total Mass: {res.total_mass_kg:.2e} kg")
+    print(f"Radius: {formatter.format_dist(res.radius_km)}")
+    print(f"Total Mass: {formatter.format_mass(res.total_mass_kg)}")
     print(f"Panel Area/Mass Ratio: {res.actual_am_ratio:.3f} m^2/kg (Limit: {res.area_mass_limit:.3f})")
 
     print("\nPlanning")
