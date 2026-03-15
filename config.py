@@ -7,4 +7,4 @@ class PhysicalConstants:
     M = 1.989e30
     G = 6.674e-11
     SIGMA = 5.670e-8
-    SGP = G * M
+    SGP = G * M //Standard Gravitational Parameter (μ)
