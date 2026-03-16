@@ -18,6 +18,7 @@ class DysonSwarmEngine:
         self.G = config.G
         self.sigma = config.SIGMA
         self.sgp = config.G * config.M
+        self.K = 1e7
 
     def calculate_power_harvested(self, D, P_factor):
         total_power_watts = self.L * P_factor
@@ -47,9 +48,31 @@ class DysonSwarmEngine:
     def calculate_resource_cost(self, M_total):
         return M_total / 3.301e23, M_total / 7.348e22
 
-    def calculate_mission_stats(self, D, P_factor, M_total, sat_size_km, mobilization_factor: float):
+    def _get_annual_capacity(self, year):
+        K = self.K
+        k = 0.1
+        t0 = 20
+        exponent = -k * (year - t0)
+        if exponent > 100:
+            return 1
+        capacity = K / (1 + math.exp(exponent))
+        return max(1, capacity)
+
+    def calculate_mission_stats(self, D, P_factor, M_total, sat_size_km, mobilization_factor):
         sat_count = (4 * self.pi * D**2 * P_factor) / ((sat_size_km**2) * 1e6)
-        annual_unit_capacity = 1e14
-        effective_capacity = annual_unit_capacity * mobilization_factor
-        construction_years = sat_count / effective_capacity
-        return sat_count, construction_years, sat_count * 0.01
+        years_elapsed = 0
+        sats_built = 0
+        max_years = 10000
+
+        while sats_built < sat_count and years_elapsed < max_years:
+            progress_ratio = sats_built / sat_count
+            current_power = (self.L * P_factor) * progress_ratio
+
+            dynamic_K = max(1e7, current_power * 1e-12)
+
+            capacity = (dynamic_K / (1 + math.exp(-0.1 * (years_elapsed - 20)))) * mobilization_factor
+
+            sats_built += capacity
+            years_elapsed += 1
+
+        return sat_count, years_elapsed, sat_count * 0.01
