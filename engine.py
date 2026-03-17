@@ -73,7 +73,7 @@ class DysonSwarmEngine:
         sat_count = (4 * self.pi * D**2 * P_factor) / ((sat_size_km**2) * 1e6)
         years_elapsed = 0
         sats_built = 0
-        max_years = 10000
+        max_years = 50000
 
         while sats_built < sat_count and years_elapsed < max_years:
             progress_ratio = sats_built / sat_count
