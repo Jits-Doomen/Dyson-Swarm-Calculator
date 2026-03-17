@@ -26,13 +26,24 @@ class DysonSwarmEngine:
 
     def calculate_swarm(self, T, H, rho, P_factor) -> SwarmResult:
         D = math.sqrt(self.L / (16 * self.pi * self.sigma * T**4))
-        AreaMassLimit = (4 * self.pi * self.G * self.M * self.c) / self.L
-        M_total = (4 * self.pi * D**2) * H * rho * P_factor
-        P_orb_sec = 2 * self.pi * math.sqrt(D**3 / self.sgp)
-        P_orb_days = P_orb_sec / 86400
-        Actual_AM = 1 / (H * rho)
 
-        return SwarmResult(D, P_orb_days, M_total, AreaMassLimit, Actual_AM)
+        area_mass_ratio = 1 / (H * rho)
+        area_mass_limit = (4 * self.pi * self.G * self.M * self.c) / self.L
+
+        beta = area_mass_ratio / area_mass_limit
+
+        effective_sgp = self.sgp * (1 - beta)
+
+        if effective_sgp > 0:
+            P_orb_sec = 2 * self.pi * math.sqrt(D**3 / effective_sgp)
+        else:
+            P_orb_sec = float('inf')
+
+        P_orb_days = P_orb_sec / 86400
+
+        M_total = (4 * self.pi * D**2) * H * rho * P_factor
+
+        return SwarmResult(D, P_orb_days, M_total, area_mass_limit, area_mass_ratio)
 
     def calculate_delta_v(self, D):
         R1 = 1.496e11
