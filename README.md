@@ -20,8 +20,6 @@ Utilizing **Kepler's Third Law**, the engine determines the orbital period and t
 
 A critical feature of this engine is the calculation of the **Area-to-Mass (A/m) Ratio**. This determines if a satellite is "Heavy" (gravity dominated) or a "Light Sail" (radiation pressure dominated).
 
-> **Critical Limit:** For Sol, the balance point is **1.305 m^2/kg**. If a panel exceeds this, it will be blown out of the solar system by sunlight and lost.
-
 ### 4. Exponential Growth
 
 Unlike linear construction models, this simulator accounts for **Positive Feedback Loops**. It models self-replicating robots that use the energy from active satellites to accelerate the production of new ones.
