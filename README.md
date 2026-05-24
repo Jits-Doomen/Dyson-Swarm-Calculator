@@ -46,17 +46,4 @@ git clone https://github.com/Jits-Doomen/Dyson-Swarm-Calculator.git
 cd Dyson-Swarm-Calculator
 py main.py
 ```
-___
-## Usage Example
-
-**Input Scenario (In reality the questions are more in-detail):**
-
-* **Target Temp:** 825K
-* **Coverage:** 50%
-* **Thickness:** 5cm
-
-**Engine Output (In reality the output gives way more data):**
-
-> **Recommendation:** Deconstruct 57% of Mercury.
-> **Timeline:** 51.23 years (Unified Humanity Mobilization).
 
