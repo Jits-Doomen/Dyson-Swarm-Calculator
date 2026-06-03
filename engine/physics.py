@@ -17,12 +17,26 @@ class PhysicsModule:
         area_mass_ratio = 1 / (H * rho)
         area_mass_limit = (4 * self.pi * self.G * self.M * self.c) / self.L
 
-        beta = area_mass_ratio / max(area_mass_limit, 1e-30)
+        beta = self.beta(r_m, H * rho)
+
         effective_mu = self.sgp * (1 - min(beta, 0.999999))
 
         period = 2 * self.pi * math.sqrt(r_m**3 / max(effective_mu, 1e-30)) / 86400
 
         return area_mass_ratio, area_mass_limit, period
+
+    def beta(self, r_m, area_mass, reflectivity=1.6):
+        if r_m <= 0:
+            return 0.0
+
+        flux = self.L / (4 * self.pi * r_m * r_m)
+        a_rad = (flux / self.c) * reflectivity * area_mass
+        a_grav = self.sgp / (r_m * r_m)
+
+        if a_grav <= 0:
+            return 0.0
+
+        return a_rad / a_grav
 
     def solar_flux(self, r_m):
         return self.L / (4 * self.pi * r_m * r_m)
