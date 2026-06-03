@@ -12,6 +12,9 @@ I told Mr. Seiler via e-mail what my code was and what I wanted to know. I expec
 
 Currently, I have an outgoing email to Mr. Williams, asking if he has an idea for better constant materials.
 ___
-# NASA
-I also have written an outgoing e-mail to Dr. Turner at NASA NIAC for a professional review of my code.
+# TU Delft. 
+When I recently revisited my model. I suspected the sun's angular diameter would introduce a significant vector divergense that a simple Inverse-Square-Point-Source model simply does not capture.
+So I reached out to Dr. Heiligers at the TU Delft with three questions about Gossamer Spacecraft, my Point Source approximation and the N-Body perturbations between sattelites.
+
+She taught me incredibely helpful ways to improve my code. These include information about the Point Source vs. the finite disk, active stationkeeping and how their positioning would require extreme precision. 
 
