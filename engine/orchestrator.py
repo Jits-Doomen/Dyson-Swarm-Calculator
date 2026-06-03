@@ -1,67 +1,62 @@
 import math
+from dataclasses import dataclass
+from .physics import PhysicsModule
+from .perturbation import PerturbationModule
+from .mission import MissionModule
 
-class PhysicsModule:
+@dataclass(frozen=True)
+class SwarmResult:
+    radius_km: float
+    orbital_period_days: float
+    total_mass_kg: float
+    area_mass_limit: float
+    actual_am_ratio: float
+    drift_warning: bool
+
+class DysonSwarmEngine:
     def __init__(self, config):
-        self.pi = config.PI
-        self.G = config.G
-        self.M = config.M
-        self.c = config.C
+        self.physics = PhysicsModule(config)
+        self.perturb = PerturbationModule()
+        self.mission = MissionModule()
         self.L = config.L
-        self.R_sun = 6.957e8
-        self.sgp = self.G * self.M
 
-    def get_radius(self, T):
-        return math.sqrt(self.L / (16 * self.pi * 5.67e-8 * T**4))
+    def calculate_swarm(self, T, H, rho, P_factor):
+        r_m = self.physics.get_radius(T)
 
-    def orbit_elements(self, r_m, H, rho):
-        area_mass_ratio = 1 / (H * rho)
-        area_mass_limit = (4 * self.pi * self.G * self.M * self.c) / self.L
+        am_ratio, am_limit, period = self.physics.orbit_elements(r_m, H, rho)
 
-        beta = self.beta(r_m, H * rho)
+        mass = 4 * math.pi * r_m * r_m * H * rho * P_factor
 
-        effective_mu = self.sgp * (1 - min(beta, 0.999999))
+        drift = self.perturb.drift_risk(r_m)
 
-        period = 2 * self.pi * math.sqrt(r_m**3 / max(effective_mu, 1e-30)) / 86400
+        return SwarmResult(
+            r_m / 1000,
+            period,
+            mass,
+            am_limit,
+            am_ratio,
+            drift
+        )
 
-        return area_mass_ratio, area_mass_limit, period
+    def calculate_delta_v(self, r_km):
+        return self.physics.calculate_delta_v(r_km)
 
-    def beta(self, r_m, area_mass, reflectivity=1.6):
-        if r_m <= 0:
-            return 0.0
+    def calculate_resource_cost(self, M_total):
+        return self.mission.calculate_costs(M_total)
 
-        flux = self.L / (4 * self.pi * r_m * r_m)
-        a_rad = (flux / self.c) * reflectivity * area_mass
-        a_grav = self.sgp / (r_m * r_m)
+    def calculate_mission_stats(self, r_km, P_factor, M_total, sat_size, mob):
+        r_m = r_km * 1000
 
-        if a_grav <= 0:
-            return 0.0
+        target, years = self.mission.simulate_construction(
+            r_m, P_factor, M_total, sat_size, mob, self.L
+        )
 
-        return a_rad / a_grav
+        beta = self.physics.beta(r_m, M_total / max(target, 1e-30))
 
-    def solar_flux(self, r_m):
-        return self.L / (4 * self.pi * r_m * r_m)
+        maint = self.perturb.stationkeeping_cost(r_m, beta, M_total)
 
-    def finite_disk_factor(self, r_m):
-        if r_m <= self.R_sun:
-            return 0.0
-        x = self.R_sun / r_m
-        return math.sqrt(max(0.0, 1 - x * x))
+        return target, years, maint
 
-    def radiation_pressure(self, r_m, P_factor, cos_inc=1.0):
-        flux = self.solar_flux(r_m)
-        disk = self.finite_disk_factor(r_m)
-        return (flux / self.c) * P_factor * disk * max(0.0, cos_inc)
-
-    def calculate_delta_v(self, D_km):
-        R1 = 1.496e11
-        R2 = D_km * 1000
-        a = (R1 + R2) / 2
-
-        mu = self.sgp
-
-        v1 = math.sqrt(mu / R1)
-        v2 = math.sqrt(mu / R2)
-        vt1 = math.sqrt(mu * (2 / R1 - 1 / a))
-        vt2 = math.sqrt(mu * (2 / R2 - 1 / a))
-
-        return abs(vt1 - v1) + abs(v2 - vt2), math.pi * math.sqrt(a**3 / mu)
+    def calculate_power_harvested(self, r_km, P_factor):
+        r_m = r_km * 1000
+        return self.physics.radiation_pressure(r_m, P_factor)
