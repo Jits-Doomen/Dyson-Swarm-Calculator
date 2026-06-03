@@ -1,6 +1,6 @@
 from config import PhysicalConstants
 from constants import MATERIALS
-from engine import DysonSwarmEngine
+from engine.orchestrator import DysonSwarmEngine
 from units import Units
 
 def main():
@@ -40,7 +40,6 @@ def main():
     print(f"\nMission Operations ({mob_input * 100:.0f}% Mobilization / Exponential Growth)")
     print(f"Total Satellites: {sat_count:.2e}")
 
-    time_display = f"{build_time:.2f} years" if isinstance(build_time, (int, float)) else build_time
     print(f"Theoretical Min. Construction Time: {build_time:.2f} years")
     print("\n*Note: Assumes the best fitting exponential manufacturing growth without logistic bottlenecks.")
     print(f"Annual Maintenance: {maintenance:.2e} replacements/year")
@@ -50,10 +49,13 @@ def main():
     print(f"Total Power Harvested: {total_power:.2e} Watts")
     print(f"Efficiency: {(total_power / res.total_mass_kg):.2f} Watts/kg")
 
-    if res.actual_am_ratio > res.area_mass_limit:
-        print("\nCRITICAL WARNING: Radiation pressure exceeds gravity! Swarm will drift away without tethers.")
+    if res.drift_warning:
+        print("\nCritical Warning: Radiation pressure/Finite-disk effects are significant, Swarm stability is at risk.")
+    elif res.actual_am_ratio > res.area_mass_limit:
+        print("\nCritical Warning: Radiation pressure exceeds gravity! Swarm will drift away without tethers.")
     else:
         print("\nSwarm Status: Gravitationally stable orbit.")
+
     print("Recommendation: Use the moon." if moon_cost <= 1 else "Recommendation: Deconstruct Mercury.")
 
 if __name__ == "__main__":
